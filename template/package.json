@@ -1,0 +1,13 @@
+{
+  "name": "pdf-merger",
+  "version": "1.0.0",
+  "description": "PDF Merger Application",
+  "scripts": {
+    "build:css": "tailwindcss -i ./styles.css -o ./dist/styles.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.3.0",
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.24"
+  }
+} 
