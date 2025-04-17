@@ -1,73 +1,270 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en" class="light">
   <head>
     <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-
-    <title>PDF MERGER</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link href="dist/styles.css" rel="stylesheet" />
+    <title>PDF Blend</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      // Configure Tailwind for dark mode
+      tailwind.config = {
+        darkMode: "class",
+      };
+    </script>
   </head>
-  <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">PDF MERGER</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-      
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
-                Dropdown
-              </a>
-              <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Something else here</a>
-              </div>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link disabled">Disabled</a>
-            </li>
-          </ul>
-          <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-          </form>
-        </div>
-      </nav>
-    <div class="container">
-        <h1>Pdf merge</h1>
-        <form method="post" action="/merge" enctype="multipart/form-data" >
-            <div class="form-group">
-              <label for="exampleFormControlFile1">select pdf file</label>
-              <input type="file" class="form-control-file" name="pdfs" id="exampleFormControlFile1" multiple accept=".pdf">
-              <input class="btn btn-primary my-4" type="submit" value="Submit">
-            </div>
-          </form>
+  <body class="bg-gray-100 dark:bg-gray-900">
+    <!-- Loader -->
+    <div id="loader" class="loader-container">
+      <div class="circle-loader"></div>
     </div>
 
-    <!-- Optional JavaScript; choose one of the two! -->
+    <nav class="bg-white dark:bg-gray-800 shadow-lg">
+      <div class="max-w-6xl mx-auto px-4">
+        <div class="flex justify-between">
+          <div class="flex space-x-7">
+            <div>
+              <a href="#" class="flex items-center py-4 px-2">
+                <span
+                  class="font-semibold text-gray-500 dark:text-gray-300 text-lg"
+                  >PDF BLEND</span
+                >
+              </a>
+            </div>
+          </div>
+          <div class="hidden md:flex items-center space-x-3">
+            <button
+              id="theme-toggle"
+              class="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 transition duration-300"
+            >
+              <svg
+                id="theme-icon"
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+                ></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
 
-    <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+    <div class="container mx-auto px-4 py-8">
+      <h1
+        class="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-6 text-center"
+      >
+        PDF Blend
+      </h1>
+      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+        <div class="mb-4">
+          <label
+            class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2"
+            for="pdf"
+          >
+            Select a PDF file
+          </label>
+          <div class="flex gap-2">
+            <input
+              type="file"
+              name="pdf"
+              id="pdf"
+              accept=".pdf"
+              class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+            />
+            <button
+              type="button"
+              id="addPdf"
+              class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition duration-300"
+            >
+              Add PDF
+            </button>
+          </div>
+        </div>
 
-    <!-- Option 2: Separate Popper and Bootstrap JS -->
-    <!--
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
-    -->
+        <div id="pdfList" class="mb-4">
+          <h3 class="text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
+            Selected PDFs:
+          </h3>
+          <div id="pdfItems" class="space-y-2">
+            <!-- PDF items will be added here -->
+          </div>
+        </div>
+
+        <form
+          method="post"
+          action="/merge"
+          enctype="multipart/form-data"
+          id="uploadForm"
+        >
+          <input type="hidden" name="pdfs" id="pdfsInput" />
+          <button
+            type="submit"
+            class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition duration-300"
+          >
+            Merge PDFs
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      // Theme toggle functionality
+      const themeToggle = document.getElementById("theme-toggle");
+      const themeIcon = document.getElementById("theme-icon");
+
+      function updateThemeIcon(isDark) {
+        if (isDark) {
+          themeIcon.innerHTML = `
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          `;
+        } else {
+          themeIcon.innerHTML = `
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          `;
+        }
+      }
+
+      // Set initial theme
+      if (
+        localStorage.theme === "dark" ||
+        (!("theme" in localStorage) &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        updateThemeIcon(true);
+      } else {
+        document.documentElement.classList.remove("dark");
+        updateThemeIcon(false);
+      }
+
+      themeToggle.addEventListener("click", () => {
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.theme = "light";
+          updateThemeIcon(false);
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.theme = "dark";
+          updateThemeIcon(true);
+        }
+      });
+
+      // PDF selection functionality
+      const pdfInput = document.getElementById("pdf");
+      const addPdfButton = document.getElementById("addPdf");
+      const pdfItems = document.getElementById("pdfItems");
+      const pdfsInput = document.getElementById("pdfsInput");
+      const uploadForm = document.getElementById("uploadForm");
+      const loader = document.getElementById("loader");
+
+      let selectedPdfs = [];
+
+      function createPdfItem(file) {
+        const item = document.createElement("div");
+        item.className =
+          "flex items-center justify-between bg-gray-100 dark:bg-gray-700 p-2 rounded";
+
+        const fileName = document.createElement("span");
+        fileName.className = "text-gray-700 dark:text-gray-300";
+        fileName.textContent = file.name;
+
+        const controls = document.createElement("div");
+        controls.className = "flex gap-2";
+
+        const moveUp = document.createElement("button");
+        moveUp.className =
+          "text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200";
+        moveUp.innerHTML = "↑";
+        moveUp.onclick = () => movePdf(file, -1);
+
+        const moveDown = document.createElement("button");
+        moveDown.className =
+          "text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200";
+        moveDown.innerHTML = "↓";
+        moveDown.onclick = () => movePdf(file, 1);
+
+        const remove = document.createElement("button");
+        remove.className = "text-red-500 hover:text-red-600";
+        remove.innerHTML = "×";
+        remove.onclick = () => removePdf(file);
+
+        controls.appendChild(moveUp);
+        controls.appendChild(moveDown);
+        controls.appendChild(remove);
+
+        item.appendChild(fileName);
+        item.appendChild(controls);
+
+        return item;
+      }
+
+      function movePdf(file, direction) {
+        const index = selectedPdfs.indexOf(file);
+        if (index === -1) return;
+
+        const newIndex = index + direction;
+        if (newIndex < 0 || newIndex >= selectedPdfs.length) return;
+
+        const temp = selectedPdfs[index];
+        selectedPdfs[index] = selectedPdfs[newIndex];
+        selectedPdfs[newIndex] = temp;
+
+        updatePdfList();
+      }
+
+      function removePdf(file) {
+        selectedPdfs = selectedPdfs.filter((f) => f !== file);
+        updatePdfList();
+      }
+
+      function updatePdfList() {
+        pdfItems.innerHTML = "";
+        selectedPdfs.forEach((file) => {
+          pdfItems.appendChild(createPdfItem(file));
+        });
+
+        // Update the hidden input with the current files
+        const dataTransfer = new DataTransfer();
+        selectedPdfs.forEach((file) => {
+          dataTransfer.items.add(file);
+        });
+        pdfInput.files = dataTransfer.files;
+      }
+
+      addPdfButton.addEventListener("click", () => {
+        const file = pdfInput.files[0];
+        if (file) {
+          selectedPdfs.push(file);
+          updatePdfList();
+          pdfInput.value = ""; // Clear the input
+        }
+      });
+
+      uploadForm.addEventListener("submit", () => {
+        if (selectedPdfs.length < 2) {
+          alert("Please select at least 2 PDFs to merge");
+          return false;
+        }
+        loader.style.display = "flex";
+      });
+
+      // Hide loader when the page is fully loaded
+      window.addEventListener("load", () => {
+        loader.style.display = "none";
+      });
+    </script>
   </body>
-</html> 
+</html>
