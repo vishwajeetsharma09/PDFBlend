@@ -7,8 +7,8 @@
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
-    <link href="dist/styles.css" rel="stylesheet" />
-    <title>PDF Blend</title>
+    <link href="../styles.css" rel="stylesheet" />
+    <title>DocHub Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       // Configure Tailwind for dark mode
@@ -18,11 +18,6 @@
     </script>
   </head>
   <body class="bg-gray-100 dark:bg-gray-900">
-    <!-- Loader -->
-    <div id="loader" class="loader-container">
-      <div class="circle-loader"></div>
-    </div>
-
     <nav class="bg-white dark:bg-gray-800 shadow-lg">
       <div class="max-w-6xl mx-auto px-4">
         <div class="flex justify-between">
@@ -31,7 +26,7 @@
               <a href="#" class="flex items-center py-4 px-2">
                 <span
                   class="font-semibold text-gray-500 dark:text-gray-300 text-lg"
-                  >PDF BLEND</span
+                  >DOCHUB PRO</span
                 >
               </a>
             </div>
@@ -66,57 +61,82 @@
       <h1
         class="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-6 text-center"
       >
-        PDF Blend
+        DocHub Pro
       </h1>
-      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-        <div class="mb-4">
-          <label
-            class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2"
-            for="pdf"
-          >
-            Select a PDF file
-          </label>
-          <div class="flex gap-2">
-            <input
-              type="file"
-              name="pdf"
-              id="pdf"
-              accept=".pdf"
-              class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-            />
-            <button
-              type="button"
-              id="addPdf"
-              class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition duration-300"
+      <div class="grid grid-cols-4 gap-4">
+        <!-- PDF Merge Box -->
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+          <div class="mb-4">
+            <label
+              class="block text-gray-700 text-center dark:text-gray-300 text-sm font-bold mb-2"
+              for="pdf"
             >
-              Add PDF
-            </button>
+              Select PDF files to merge
+            </label>
+            <div class="flex gap-2">
+              <input
+                type="file"
+                name="pdf"
+                id="pdf"
+                accept=".pdf"
+                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
+              <button
+                type="button"
+                id="addPdf"
+                class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition duration-300"
+              >
+                Add PDF
+              </button>
+            </div>
           </div>
-        </div>
 
-        <div id="pdfList" class="mb-4">
-          <h3 class="text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
-            Selected PDFs:
-          </h3>
-          <div id="pdfItems" class="space-y-2">
-            <!-- PDF items will be added here -->
+          <div id="pdfList" class="mb-4">
+            <h3 class="text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
+              Selected PDFs:
+            </h3>
+            <div id="pdfItems" class="pdf-list-container">
+              <div class="text-black dark:text-gray-300">No PDFs selected yet</div>
+            </div>
           </div>
-        </div>
 
-        <form
-          method="post"
-          action="/merge"
-          enctype="multipart/form-data"
-          id="uploadForm"
-        >
-          <input type="hidden" name="pdfs" id="pdfsInput" />
-          <button
-            type="submit"
-            class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition duration-300"
+          <form
+            method="post"
+            action="/merge"
+            enctype="multipart/form-data"
+            id="uploadForm"
           >
-            Merge PDFs
-          </button>
-        </form>
+            <input type="hidden" name="pdfs" id="pdfsInput" />
+            <button
+              type="submit"
+              class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition duration-300"
+            >
+              Merge PDFs
+            </button>
+          </form>
+        </div>
+
+        <!-- Placeholder boxes for future options -->
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+          <h3 class="text-gray-700 dark:text-gray-300 text-lg font-bold mb-2">
+            Future Option 1
+          </h3>
+          <p class="text-gray-600 dark:text-gray-400">Coming soon...</p>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+          <h3 class="text-gray-700 dark:text-gray-300 text-lg font-bold mb-2">
+            Future Option 2
+          </h3>
+          <p class="text-gray-600 dark:text-gray-400">Coming soon...</p>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+          <h3 class="text-gray-700 dark:text-gray-300 text-lg font-bold mb-2">
+            Future Option 3
+          </h3>
+          <p class="text-gray-600 dark:text-gray-400">Coming soon...</p>
+        </div>
       </div>
     </div>
 
@@ -168,37 +188,57 @@
       const pdfItems = document.getElementById("pdfItems");
       const pdfsInput = document.getElementById("pdfsInput");
       const uploadForm = document.getElementById("uploadForm");
-      const loader = document.getElementById("loader");
 
       let selectedPdfs = [];
 
+      // Add PDF button click handler
+      addPdfButton.addEventListener("click", () => {
+        const file = pdfInput.files[0];
+        if (file) {
+          // Check if file is a PDF
+          if (file.type !== "application/pdf") {
+            alert("Please select a PDF file");
+            return;
+          }
+
+          // Add file to selected PDFs
+          selectedPdfs.push(file);
+          updatePdfList();
+
+          // Clear the file input
+          pdfInput.value = "";
+        } else {
+          alert("Please select a PDF file first");
+        }
+      });
+
       function createPdfItem(file) {
         const item = document.createElement("div");
-        item.className =
-          "flex items-center justify-between bg-gray-100 dark:bg-gray-700 p-2 rounded";
+        item.className = "pdf-item";
 
-        const fileName = document.createElement("span");
-        fileName.className = "text-gray-700 dark:text-gray-300";
+        const fileName = document.createElement("div");
+        fileName.className = "file-name";
         fileName.textContent = file.name;
 
         const controls = document.createElement("div");
-        controls.className = "flex gap-2";
+        controls.className = "controls";
 
         const moveUp = document.createElement("button");
-        moveUp.className =
-          "text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200";
+        moveUp.className = "move-up";
         moveUp.innerHTML = "↑";
+        moveUp.title = "Move up";
         moveUp.onclick = () => movePdf(file, -1);
 
         const moveDown = document.createElement("button");
-        moveDown.className =
-          "text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200";
+        moveDown.className = "move-down";
         moveDown.innerHTML = "↓";
+        moveDown.title = "Move down";
         moveDown.onclick = () => movePdf(file, 1);
 
         const remove = document.createElement("button");
-        remove.className = "text-red-500 hover:text-red-600";
+        remove.className = "remove";
         remove.innerHTML = "×";
+        remove.title = "Remove";
         remove.onclick = () => removePdf(file);
 
         controls.appendChild(moveUp);
@@ -231,7 +271,17 @@
       }
 
       function updatePdfList() {
+        const pdfItems = document.getElementById("pdfItems");
         pdfItems.innerHTML = "";
+
+        if (selectedPdfs.length === 0) {
+          const emptyState = document.createElement("div");
+          emptyState.className = "empty-state";
+          emptyState.textContent = "No PDFs selected yet";
+          pdfItems.appendChild(emptyState);
+          return;
+        }
+
         selectedPdfs.forEach((file) => {
           pdfItems.appendChild(createPdfItem(file));
         });
@@ -244,26 +294,41 @@
         pdfInput.files = dataTransfer.files;
       }
 
-      addPdfButton.addEventListener("click", () => {
-        const file = pdfInput.files[0];
-        if (file) {
-          selectedPdfs.push(file);
-          updatePdfList();
-          pdfInput.value = ""; // Clear the input
-        }
-      });
+      // Add form submit event listener
+      uploadForm.addEventListener("submit", async function (e) {
+        e.preventDefault();
 
-      uploadForm.addEventListener("submit", () => {
         if (selectedPdfs.length < 2) {
           alert("Please select at least 2 PDFs to merge");
-          return false;
+          return;
         }
-        loader.style.display = "flex";
-      });
 
-      // Hide loader when the page is fully loaded
-      window.addEventListener("load", () => {
-        loader.style.display = "none";
+        try {
+          const formData = new FormData();
+          selectedPdfs.forEach((file) => {
+            formData.append("pdfs", file);
+          });
+
+          const response = await fetch("/merge", {
+            method: "POST",
+            body: formData,
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+            // Open the merged PDF in a new window
+            window.open(data.pdfUrl, "_blank");
+            // Clear the selected PDFs
+            selectedPdfs = [];
+            updatePdfList();
+          } else {
+            alert(data.error || "Error merging PDFs");
+          }
+        } catch (error) {
+          console.error("Error:", error);
+          alert("An error occurred while merging PDFs");
+        }
       });
     </script>
   </body>
