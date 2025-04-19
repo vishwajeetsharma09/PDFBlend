@@ -18,7 +18,7 @@
 /* PDF List Container Styles */
 .pdf-list-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 1rem;
   margin-top: 1rem;
   padding: 1rem;
@@ -119,4 +119,23 @@
 
 .dark .empty-state {
   color: #9ca3af;
+}
+
+@media (max-width: 640px) {
+  .pdf-list-container {
+    grid-template-columns: 1fr;
+  }
+
+  .pdf-item {
+    min-height: 80px;
+  }
+
+  .pdf-item .controls {
+    flex-wrap: wrap;
+  }
+
+  .pdf-item .controls button {
+    padding: 0.2rem 0.4rem;
+    font-size: 0.875rem;
+  }
 }
