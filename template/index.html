@@ -96,13 +96,15 @@
               Selected PDFs:
             </h3>
             <div id="pdfItems" class="pdf-list-container">
-              <div class="text-black dark:text-gray-300">No PDFs selected yet</div>
+              <div class="text-black dark:text-gray-300">
+                No PDFs selected yet
+              </div>
             </div>
           </div>
 
           <form
             method="post"
-            action="/merge"
+            action="/api/merge"
             enctype="multipart/form-data"
             id="uploadForm"
           >
@@ -309,25 +311,33 @@
             formData.append("pdfs", file);
           });
 
-          const response = await fetch("/merge", {
+          const response = await fetch("/api/merge", {
             method: "POST",
             body: formData,
           });
 
-          const data = await response.json();
-
-          if (data.success) {
-            // Open the merged PDF in a new window
-            window.open(data.pdfUrl, "_blank");
-            // Clear the selected PDFs
-            selectedPdfs = [];
-            updatePdfList();
-          } else {
-            alert(data.error || "Error merging PDFs");
+          if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.error || "Error merging PDFs");
           }
+
+          // Get the PDF blob from the response
+          const pdfBlob = await response.blob();
+
+          // Create a download link for the merged PDF
+          const downloadLink = document.createElement("a");
+          downloadLink.href = URL.createObjectURL(pdfBlob);
+          downloadLink.download = `merged_${Date.now()}.pdf`;
+          document.body.appendChild(downloadLink);
+          downloadLink.click();
+          document.body.removeChild(downloadLink);
+
+          // Clear the selected PDFs
+          selectedPdfs = [];
+          updatePdfList();
         } catch (error) {
           console.error("Error:", error);
-          alert("An error occurred while merging PDFs");
+          alert(error.message || "An error occurred while merging PDFs");
         }
       });
     </script>
