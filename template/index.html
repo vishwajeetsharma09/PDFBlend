@@ -316,25 +316,30 @@
             body: formData,
           });
 
-          if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.error || "Error merging PDFs");
+          // Check if the response is a PDF
+          const contentType = response.headers.get("content-type");
+          if (contentType && contentType.includes("application/pdf")) {
+            // Get the PDF blob from the response
+            const pdfBlob = await response.blob();
+
+            // Create a download link for the merged PDF
+            const downloadLink = document.createElement("a");
+            downloadLink.href = URL.createObjectURL(pdfBlob);
+            downloadLink.download = `merged_${Date.now()}.pdf`;
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+
+            // Clear the selected PDFs
+            selectedPdfs = [];
+            updatePdfList();
+          } else {
+            // Handle error response
+            const errorData = await response
+              .json()
+              .catch(() => ({ error: "Failed to merge PDFs" }));
+            throw new Error(errorData.error || "Error merging PDFs");
           }
-
-          // Get the PDF blob from the response
-          const pdfBlob = await response.blob();
-
-          // Create a download link for the merged PDF
-          const downloadLink = document.createElement("a");
-          downloadLink.href = URL.createObjectURL(pdfBlob);
-          downloadLink.download = `merged_${Date.now()}.pdf`;
-          document.body.appendChild(downloadLink);
-          downloadLink.click();
-          document.body.removeChild(downloadLink);
-
-          // Clear the selected PDFs
-          selectedPdfs = [];
-          updatePdfList();
         } catch (error) {
           console.error("Error:", error);
           alert(error.message || "An error occurred while merging PDFs");
