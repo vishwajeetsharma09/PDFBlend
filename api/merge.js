@@ -16,6 +16,16 @@ const multipartFormData = (req, res, next) => {
 };
 
 module.exports = async (req, res) => {
+  // Set CORS headers
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  // Handle preflight requests
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+
   // Only allow POST requests
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
@@ -51,6 +61,11 @@ module.exports = async (req, res) => {
     res.send(mergedPdfBuffer);
   } catch (error) {
     console.error("Error merging PDFs:", error);
-    res.status(500).json({ error: "Error merging PDFs" });
+    // Ensure we're sending a JSON response for errors
+    res.setHeader("Content-Type", "application/json");
+    res.status(500).json({
+      error: "Error merging PDFs",
+      details: error.message || "Unknown error occurred",
+    });
   }
 };
