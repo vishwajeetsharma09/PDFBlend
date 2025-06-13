@@ -3,8 +3,10 @@ const path = require("path");
 const app = express();
 const multer = require("multer");
 const { mergerpdf } = require("./merger");
-const upload = multer({ dest: "uploads/" });
 const fs = require("fs");
+
+// Configure multer for memory storage
+const upload = multer({ storage: multer.memoryStorage() });
 
 // Ensure public directory exists
 const publicDir = path.join(__dirname, "public");
@@ -14,13 +16,13 @@ if (!fs.existsSync(publicDir)) {
 
 // Serve static files from the public directory
 app.use("/static", express.static(publicDir));
+// Serve static files from the template directory
+app.use(express.static(path.join(__dirname, "template")));
+
 const port = 3000;
 
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "template/index.html"));
-});
-
-app.post("/merge", upload.array("pdfs"), async function (req, res, next) {
+// API route for merging PDFs
+app.post("/api/merge", upload.array("pdfs"), async function (req, res) {
   try {
     if (!req.files || req.files.length < 2) {
       return res
@@ -28,21 +30,29 @@ app.post("/merge", upload.array("pdfs"), async function (req, res, next) {
         .json({ error: "Please select at least 2 PDF files to merge" });
     }
 
-    // Get full paths of all uploaded PDFs
-    const pdfPaths = req.files.map((file) => path.join(__dirname, file.path));
+    // Create a temporary directory for processing
+    const tempDir = path.join(__dirname, "temp");
+    if (!fs.existsSync(tempDir)) {
+      fs.mkdirSync(tempDir, { recursive: true });
+    }
+
+    // Save uploaded files to temporary directory
+    const pdfPaths = req.files.map((file, index) => {
+      const filePath = path.join(tempDir, `file-${index}.pdf`);
+      fs.writeFileSync(filePath, file.buffer);
+      return filePath;
+    });
 
     // Generate a unique filename for the merged PDF
     const timestamp = Date.now();
     const mergedFileName = `merged_${timestamp}.pdf`;
     const mergedFilePath = path.join(publicDir, mergedFileName);
 
-    // Merge all PDFs
+    // Merge the PDFs
     await mergerpdf(pdfPaths, mergedFilePath);
 
-    // Clean up uploaded files
-    req.files.forEach((file) => {
-      fs.unlinkSync(path.join(__dirname, file.path));
-    });
+    // Clean up temporary files
+    pdfPaths.forEach((filePath) => fs.unlinkSync(filePath));
 
     // Send success response with the path to the merged PDF
     res.json({
@@ -56,6 +66,11 @@ app.post("/merge", upload.array("pdfs"), async function (req, res, next) {
   }
 });
 
+// Serve the main HTML file
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "template/index.html"));
+});
+
 app.listen(port, () => {
-  console.log("server listening to port " + port);
+  console.log(`Server is running on http://localhost:${port}`);
 });
